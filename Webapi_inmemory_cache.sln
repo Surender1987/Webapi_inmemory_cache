@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webapi_inmemory_cache", "Webapi_inmemory_cache\Webapi_inmemory_cache.csproj", "{F60F8B75-8E3F-41A6-80C3-FA7216810215}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F60F8B75-8E3F-41A6-80C3-FA7216810215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60F8B75-8E3F-41A6-80C3-FA7216810215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60F8B75-8E3F-41A6-80C3-FA7216810215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60F8B75-8E3F-41A6-80C3-FA7216810215}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B07239CF-E274-46BF-8152-2ED185821C64}
+	EndGlobalSection
+EndGlobal
