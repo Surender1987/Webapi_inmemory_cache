@@ -25,6 +25,7 @@ namespace Webapi_inmemory_cache
                 c.SwaggerDoc("v1", new Info { Title = "Student API", Version = "v1" });
             });
 
+            services.AddMemoryCache();
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<StudentDBContext>(ctx => ctx.UseInMemoryDatabase("database"));
             services.AddScoped<IStudentService, StudentService>();

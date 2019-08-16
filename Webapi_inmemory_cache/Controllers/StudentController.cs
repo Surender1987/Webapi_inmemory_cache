@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Webapi_inmemory_cache.BusinessLayer.Interfaces;
 using Webapi_inmemory_cache.Models;
 
@@ -15,15 +16,29 @@ namespace Webapi_inmemory_cache.Controllers
     public class StudentController : ControllerBase
     {
         /// <summary>
+        /// Cahey keys
+        /// </summary>
+        private const string ALLSTUDENTCACHEKEY = "AllStudents";
+        private const string STUDENTBYID = "StudentById";
+
+        /// <summary>
         /// Student service
         /// </summary>
         private readonly IStudentService _studentService;
 
         /// <summary>
+        /// Memory cache variable
+        /// </summary>
+        private readonly IMemoryCache _memoryCache;
+
+        /// <summary>
         /// Initialize instance for <see cref="StudentController"/>
         /// </summary>
-        public StudentController(IStudentService studentService)
-            => _studentService = studentService ?? throw new ArgumentNullException(nameof(studentService));
+        public StudentController(IStudentService studentService, IMemoryCache memoryCache)
+        {
+            _studentService = studentService ?? throw new ArgumentNullException(nameof(studentService));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+        }
 
         /// <summary>
         /// Get all students
@@ -31,7 +46,24 @@ namespace Webapi_inmemory_cache.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public Task<List<StudentDTO>> Get() => _studentService.Get();
+        public async Task<List<StudentDTO>> Get()
+        {
+            if (!_memoryCache.TryGetValue(ALLSTUDENTCACHEKEY, out List<StudentDTO> studentList))
+            {
+                studentList = await _studentService.Get();
+                var memoryCacheOption = new MemoryCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromMinutes(10)
+                };
+                _memoryCache.Set(ALLSTUDENTCACHEKEY, studentList, memoryCacheOption);
+                SetSource(ref studentList, "From Database");
+            }
+            else
+            {
+                SetSource(ref studentList, "From Cache");
+            }
+            return studentList;
+        }
 
         /// <summary>
         /// Get student by id
@@ -39,7 +71,16 @@ namespace Webapi_inmemory_cache.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public Task<StudentDTO> Get(int id) => _studentService.Get(id);
+        public Task<StudentDTO> Get(int id)
+        {
+            return _memoryCache.GetOrCreate(STUDENTBYID, async entry =>
+            {
+                entry.SlidingExpiration = TimeSpan.FromMinutes(10);
+                var student = await _studentService.Get(id);
+
+                return student;
+            });
+        }
 
         /// <summary>
         /// Add new student 
@@ -56,5 +97,8 @@ namespace Webapi_inmemory_cache.Controllers
         [HttpPut]
         [Route("")]
         public Task<int> Put(StudentDTO studentDTO) => _studentService.Put(studentDTO);
+
+        private void SetSource(ref List<StudentDTO> students, string source)
+            => students.ForEach((std) => std.Source = source);
     }
 }

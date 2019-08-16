@@ -64,6 +64,7 @@ namespace Webapi_inmemory_cache.DataaccessLayer
         {
             var studentEntity = _mapper.Map<Student>(student);
             var std = _studentDBContext.Students.Add(studentEntity);
+            _studentDBContext.SaveChanges();
             return Task.FromResult(std.Entity.Id);
         }
 
