@@ -33,7 +33,7 @@ B. Inject IMemoryCache instance to constructor as below
 
 	using Microsoft.Extensions.Caching.Memory;
 	
-	/// <summary>
+    /// <summary>
     /// Memory cache variable
     /// </summary>
     private readonly IMemoryCache _memoryCache;
@@ -48,9 +48,9 @@ B. Inject IMemoryCache instance to constructor as below
 
 C. Use IMemoryCache instance to get or set cache objects. IMemoryCache provides a number of instance methods to handle cache operations. Some of them are below
 
-	C1. IMemoryCache.TryGetValue(Key, out type object):	TryGetValue method takes key and one out variable for cached object. It returns true if object corresponding to provided key found in cache otherwise false. For example we cached and get all student details in student controller by code below
+C1. IMemoryCache.TryGetValue(Key, out type object):	TryGetValue method takes key and one out variable for cached object. It returns true if object corresponding to provided key found in cache otherwise false. For example we cached and get all student details in student controller by code below
 	
-		/// <summary>
+	/// <summary>
         /// Get all students
         /// </summary>
         /// <returns></returns>
@@ -75,19 +75,19 @@ C. Use IMemoryCache instance to get or set cache objects. IMemoryCache provides 
             return studentList;
         }
 
-	C2. IMemoryCache.Set(Key, Object, memoryCacheEntryOption): As name indicates this method is used to cached an object corresponding to provided key as 
+C2. IMemoryCache.Set(Key, Object, memoryCacheEntryOption): As name indicates this method is used to cached an object corresponding to provided key as 
 
-		var memoryCacheOption = new MemoryCacheEntryOptions
+	var memoryCacheOption = new MemoryCacheEntryOptions
         {
             SlidingExpiration = TimeSpan.FromMinutes(10)
         };
         _memoryCache.Set(ALLSTUDENTCACHEKEY, studentList, memoryCacheOption);
 
-		Here memoryCacheEntryOption is to indicate behaviour of cached object. In above code we set sliding expiration of 10 minutes to cached object.
+Here memoryCacheEntryOption is to indicate behaviour of cached object. In above code we set sliding expiration of 10 minutes to cached object.
 
-	C3. IMemoryCache.GetOrCreate(key, Func): As name indicates this method can be used to get or cache a object if not exists. It takes two parameters first key correspnding to which we are looking for cached object and second is logic to get data or object if not exists in cache. For example in student controller's Get(id) action
+C3. IMemoryCache.GetOrCreate(key, Func): As name indicates this method can be used to get or cache a object if not exists. It takes two parameters first key correspnding to which we are looking for cached object and second is logic to get data or object if not exists in cache. For example in student controller's Get(id) action
 
-		/// <summary>
+	/// <summary>
         /// Get student by id
         /// </summary>
         /// <returns></returns>
@@ -104,5 +104,5 @@ C. Use IMemoryCache instance to get or set cache objects. IMemoryCache provides 
             });
         }
 
-	C4. IMemoryCache.GetOrCreateAsync(Key, Func): This method is exact same as GetOrCreate method as describe above. Only difference, this provide same functionality asynchronously.
+C4. IMemoryCache.GetOrCreateAsync(Key, Func): This method is exact same as GetOrCreate method as describe above. Only difference, this provide same functionality asynchronously.
 
