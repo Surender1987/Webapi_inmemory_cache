@@ -1,2 +1,4 @@
-# Webapi_inmemory_cache
-This repo will demonstrate how we can implement in-memory cache to web api core. 
+# In memory cache in .net core
+
+##Introduction
+Aim of this repo is to introduce .net core in memory cache feature. 
