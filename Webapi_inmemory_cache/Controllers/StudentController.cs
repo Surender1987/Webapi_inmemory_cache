@@ -38,14 +38,14 @@ namespace Webapi_inmemory_cache.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("{id: int}")]
+        [Route("{id}")]
         public Task<StudentDTO> Get(int id) => _studentService.Get(id);
 
         /// <summary>
         /// Add new student 
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("")]
         public Task<int> Post(StudentDTO studentDTO) => _studentService.Post(studentDTO);
 

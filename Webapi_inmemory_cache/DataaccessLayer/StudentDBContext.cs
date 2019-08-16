@@ -12,7 +12,11 @@ namespace Webapi_inmemory_cache.DataaccessLayer
     /// </summary>
     public class StudentDBContext : DbContext
     {
-        public StudentDBContext(DbContextOptions option)
+        public StudentDBContext()
+        {
+
+        }
+        public StudentDBContext(DbContextOptions<StudentDBContext> option)
             :base(option)
         { }
 

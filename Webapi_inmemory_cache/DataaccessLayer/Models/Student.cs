@@ -44,7 +44,7 @@ namespace Webapi_inmemory_cache.DataaccessLayer.Models
         /// <summary>
         /// Get or set for first name
         /// </summary>
-        public AddressDTO Address { get; set; }
+        public Address Address { get; set; }
 
     }
 }
