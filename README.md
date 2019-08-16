@@ -50,7 +50,7 @@ C. Use IMemoryCache instance to get or set cache objects. IMemoryCache provides 
 
 C1. IMemoryCache.TryGetValue(Key, out type object):	TryGetValue method takes key and one out variable for cached object. It returns true if object corresponding to provided key found in cache otherwise false. For example we cached and get all student details in student controller by code below
 	
-	/// <summary>
+	    /// <summary>
         /// Get all students
         /// </summary>
         /// <returns></returns>
@@ -77,7 +77,7 @@ C1. IMemoryCache.TryGetValue(Key, out type object):	TryGetValue method takes key
 
 C2. IMemoryCache.Set(Key, Object, memoryCacheEntryOption): As name indicates this method is used to cached an object corresponding to provided key as 
 
-	var memoryCacheOption = new MemoryCacheEntryOptions
+	    var memoryCacheOption = new MemoryCacheEntryOptions
         {
             SlidingExpiration = TimeSpan.FromMinutes(10)
         };
@@ -87,7 +87,7 @@ Here memoryCacheEntryOption is to indicate behaviour of cached object. In above 
 
 C3. IMemoryCache.GetOrCreate(key, Func): As name indicates this method can be used to get or cache a object if not exists. It takes two parameters first key correspnding to which we are looking for cached object and second is logic to get data or object if not exists in cache. For example in student controller's Get(id) action
 
-	/// <summary>
+	    /// <summary>
         /// Get student by id
         /// </summary>
         /// <returns></returns>
