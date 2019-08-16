@@ -106,3 +106,40 @@ C3. IMemoryCache.GetOrCreate(key, Func): As name indicates this method can be us
 
 C4. IMemoryCache.GetOrCreateAsync(Key, Func): This method is exact same as GetOrCreate method as describe above. Only difference, this provide same functionality asynchronously.
 
+### MemoryCacheEntryOption
+
+MemoryCacheentryOption object provide us a way to describe behaviour of cached object. By this object we can set priority, size and eviction call back method chahed object.
+
+	 var cacheEntryOptions = new MemoryCacheEntryOptions()
+        // Pin to cache.
+        .SetPriority(CacheItemPriority.NeverRemove)
+        // Add eviction callback
+        .RegisterPostEvictionCallback(callback: EvictionCallback, state: this);
+
+		private static void EvictionCallback(object key, object value,
+			EvictionReason reason, object state)
+		{
+			var message = $"Entry was evicted. Reason: {reason}.";
+			((ControllerNameToCast)state)._cache.Set(CacheKeys.CallbackMessage, message);
+		}
+
+
+#### Use SetSize, Size and SizeLimit to limit cache size
+
+We can provide size limit to cache by using provided methods and properties. Memory cache does not have unit for size so it's completly depends on developers how they handle unit for cache size, unit can be count of objects or size in bytes or something else. When we limit cache with a value in AddMemoryCache() method inside startup class then we also need to provide size for each entry to cache with same units. For example i am using bytes as unit for my cache limit
+
+	services.AddMemoryCache(option=> option.SizeLimit = 10640);
+
+Above code indicate cache size is limited to 10 MB. Once we set SizeLimit then its mandatory to provide size for each cache entry in same unit. All entry to cahe will be ignored if sum of cached object size exceed provided size limit. Cache entry size can be defined with following code 
+
+	var cacheEntryOptions = new MemoryCacheEntryOptions() 
+            // Set cache entry size by extension method.
+            .SetSize(1) 
+            // Keep in cache for this time, reset time if accessed.
+            .SetSlidingExpiration(TimeSpan.FromSeconds(3));
+
+        // Set cache entry size via property.
+        // cacheEntryOptions.Size = 1;
+
+        // Save data in cache.
+        _cache.Set(MyKey, cacheEntry, cacheEntryOptions);
